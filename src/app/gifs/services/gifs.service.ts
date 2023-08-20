@@ -18,10 +18,28 @@ export class GifsService {
     return [...this._tagsHistory];
   }
 
+  private organizeHistory( tag: string ) {
+    tag = tag.toLowerCase();
+
+    if(this._tagsHistory.includes( tag ) ) {
+      this._tagsHistory = this._tagsHistory.filter( oldTag => oldTag !== tag );
+    }
+
+    this._tagsHistory.unshift( tag );
+    this._tagsHistory = this._tagsHistory.splice(0, 10);
+
+  }
+
   // Agregar tag
   public searchTag( tag: string ): void {
+
+    // Si el texto viene vacío
+    if( tag.length === 0 ) return;
+
     // Agregar tag al principio de la lista
-    this._tagsHistory.unshift(tag);
+    // this._tagsHistory.unshift(tag);
+
+    this.organizeHistory( tag );
 
     console.log(this._tagsHistory);
   }
