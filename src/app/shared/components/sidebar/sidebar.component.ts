@@ -16,4 +16,10 @@ export class SidebarComponent {
     return this.gifsService.tagsHistory;
   }
 
+  // Buscar tag al tocar el nombre del historial
+  public searchTag( tag: string ): void {
+    // console.log({ tag });
+    this.gifsService.searchTag( tag );
+  }
+
 }
