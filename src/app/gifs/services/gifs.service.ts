@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Gif, SearchResponse } from '../interfaces/gifs.interfaces';
 
 /*
   provideIn: 'root' lo que hace es permitir que nuestro servicio este de manera
@@ -9,6 +10,8 @@ import { Injectable } from '@angular/core';
 */
 @Injectable({providedIn: 'root'})
 export class GifsService {
+
+  public gifsList: Gif[] = [];
 
   private _tagsHistory: string[] = [];
   private apiKey:       string = 'D6kya1IWLx0W1WgHPFKGVWwHEAoTu65k';
@@ -54,9 +57,13 @@ export class GifsService {
       .set('limit', 10)
       .set('q', tag)
 
-    this.http.get(`${ this.serviceUrl }/search`, { params })
+      // La petición será de tipo de la interfaz SearchResponse
+    this.http.get<SearchResponse>(`${ this.serviceUrl }/search`, { params })
       .subscribe( resp => {
-        console.log(resp);
+
+        this.gifsList = resp.data;
+        console.log({gifs: this.gifsList});
+
       });
 
   }
