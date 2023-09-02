@@ -1,3 +1,4 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 /*
@@ -10,12 +11,16 @@ import { Injectable } from '@angular/core';
 export class GifsService {
 
   private _tagsHistory: string[] = [];
-  private apiKey: string = 'D6kya1IWLx0W1WgHPFKGVWwHEAoTu65k';
+  private apiKey:       string = 'D6kya1IWLx0W1WgHPFKGVWwHEAoTu65k';
+  private serviceUrl:   string = 'https://api.giphy.com/v1/gifs';
 
-  constructor() { }
+  constructor(
+    // Inyectar servicio http
+    private http: HttpClient
+  ) { }
 
   // Obtener tags
-  get tagsHisory(): string[] {
+  get tagsHistory(): string[] {
     return [...this._tagsHistory];
   }
 
@@ -32,7 +37,7 @@ export class GifsService {
   }
 
   // Agregar tag
-  public searchTag( tag: string ): void {
+  searchTag( tag: string ): void {
 
     // Si el texto viene vacío
     if( tag.length === 0 ) return;
@@ -41,8 +46,19 @@ export class GifsService {
     // this._tagsHistory.unshift(tag);
 
     this.organizeHistory( tag );
+    // console.log(this._tagsHistory);
 
-    console.log(this._tagsHistory);
+    // Objeto de parámetros
+    const params = new HttpParams()
+      .set('api_key', 'D6kya1IWLx0W1WgHPFKGVWwHEAoTu65k')
+      .set('limit', 10)
+      .set('q', tag)
+
+    this.http.get(`${ this.serviceUrl }/search`, { params })
+      .subscribe( resp => {
+        console.log(resp);
+      });
+
   }
 
 }
