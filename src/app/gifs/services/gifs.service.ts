@@ -19,8 +19,10 @@ export class GifsService {
 
   constructor(
     // Inyectar servicio http
-    private http: HttpClient
-  ) { }
+    private http: HttpClient ) {
+    // Cuando el gifService sea cargado cargar la data que este en LS
+    this.loadLocalStorage();
+  }
 
   // Obtener tags
   get tagsHistory(): string[] {
@@ -36,12 +38,29 @@ export class GifsService {
 
     this._tagsHistory.unshift( tag );
     this._tagsHistory = this._tagsHistory.splice(0, 10);
+
+    // Después de modificar el historial lo guardo en el LocalStorage
     this.saveLocalStorage();
 
   }
 
+  // Guardar los gifs en el localStorage
   private saveLocalStorage(): void {
     localStorage.setItem('history', JSON.stringify(this._tagsHistory));
+  }
+
+  // Cargar del LocalStorage
+  private loadLocalStorage(): void {
+    // Si no hay data del historial de gifs en el LocalStorage
+    if(!localStorage.getItem('history')) return;
+
+    this._tagsHistory = JSON.parse( localStorage.getItem('history')! ); // Siempre va a venir una data si hay algo en el LS
+
+    if(this.tagsHistory.length === 0) return;
+
+    // Por default cargar el 1er valor encontrado en el LS
+    this.searchTag( this._tagsHistory[0]);
+
   }
 
   // Agregar tag
