@@ -1,5 +1,7 @@
 <div class='d-flex justify-content-center'>
 
+  <!-- (load): El evento (load) se dispara cuando el elemento ha terminado de cargar -->
+  <!-- [ngStyle] = Si la imágen ya cargo muestralo si no display: none -->
   <img
     [src]='url'
     [alt]='alt'
@@ -8,6 +10,7 @@
     [ngStyle]="{ display: hasLoaded ? '' : 'none' }"
   />
 
+  <!-- Si no ha cargado la imágen muestra el svg del loader -->
   <img
     *ngIf="!hasLoaded"
     src="assets/loader.svg"

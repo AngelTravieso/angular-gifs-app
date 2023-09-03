@@ -12,9 +12,11 @@ export class LazyImageComponent implements OnInit {
   @Input()
   public alt: string = '';
 
+  // Propiedad para saber si cargó la imágen
   public hasLoaded: boolean = false;
 
   ngOnInit(): void {
+    // Disparar error si no se pasa como prop la url
     if( !this.url ) throw new Error('URL property is required');
   }
 
